@@ -82,6 +82,7 @@ const ListForm: React.FC<ListFormProps> = ({ boardId, id, onClose }) => {
       updatedAt: new Date(),
       checklists: [],
       taskLogs: [],
+      taskPriority: "",
     };
     try {
       const response = await addTaskToListWithId(boardId, id, newTask);

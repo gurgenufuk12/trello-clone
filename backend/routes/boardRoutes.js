@@ -12,6 +12,9 @@ const {
   addCheckListItemToCheckList,
 } = require("../controllers/boardController");
 const { checkItemInCheckList } = require("../controllers/boardController");
+const { addTaskLogToTask } = require("../controllers/boardController");
+const { addPriorityToTask } = require("../controllers/boardController");
+const { addStatusToTask } = require("../controllers/boardController");
 const router = express.Router();
 
 router.post("/addBoard", addBoard);
@@ -33,5 +36,7 @@ router.put(
   "/checkItemInCheckList/:id/:listId/:taskId/:checklistId/:checklistItemId",
   checkItemInCheckList
 );
-
+router.post("/addTaskLogToTask/:id/:listId/:taskId", addTaskLogToTask);
+router.put("/addPriorityToTask/:id/:listId/:taskId", addPriorityToTask);
+router.put("/addStatusToTask/:id/:listId/:taskId", addStatusToTask);
 module.exports = router;

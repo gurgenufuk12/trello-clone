@@ -1,5 +1,8 @@
 // Navbar.tsx
 import React, { useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentBoard } from "../redux/projectSlice";
+import { RootState } from "../redux/store";
 import styled from "styled-components";
 import { AuthContext } from "../contexts/AuthContext";
 import { getBoards } from "../services/BoardService";
@@ -97,6 +100,9 @@ const Navbar: React.FC<NavbarProps> = ({
   setBoards,
 }) => {
   const authContext = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const project = useSelector((state: RootState) => state.project);
+  console.log(project);
 
   const handleLogout = async () => {
     try {
@@ -145,6 +151,7 @@ const Navbar: React.FC<NavbarProps> = ({
             onClick={() => {
               setActiveMenu(2);
               setSelectedBoard(board);
+              dispatch(setCurrentBoard(board));
             }}
           />
         ))}

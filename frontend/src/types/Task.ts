@@ -13,7 +13,9 @@ export interface CheckList {
   items: CheckListItem[];
 }
 export interface TaskLogs {
-  logDoneBy: string;
+  id: string;
+  logDoneBy: string | undefined;
+  createdAt: Date;
   logDescription: string;
 }
 export interface Task {
@@ -29,4 +31,5 @@ export interface Task {
   updatedAt: Date;
   checklists: CheckList[];
   taskLogs: TaskLogs[];
+  taskPriority: string;
 }

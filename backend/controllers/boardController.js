@@ -102,6 +102,7 @@ const addTaskToListWithId = async (req, res, next) => {
       updatedAt,
       checklists,
       taskLogs,
+      taskPriority,
     } = req.body;
 
     const boardId = req.params.id;
@@ -131,6 +132,7 @@ const addTaskToListWithId = async (req, res, next) => {
           updatedAt,
           checklists,
           taskLogs,
+          taskPriority,
         };
         listTasks.push(newTask);
         await boardRef.update({ boardList });
@@ -365,6 +367,115 @@ const checkItemInCheckList = async (req, res, next) => {
     res.status(400).send(error.message);
   }
 };
+const addTaskLogToTask = async (req, res, next) => {
+  try {
+    const boardId = req.params.id;
+    const listId = req.params.listId;
+    const taskId = req.params.taskId;
+    const { createdAt, logDoneBy, logDescription } = req.body;
+
+    const boardRef = db.doc(boardId);
+    const board = await boardRef.get();
+    if (!board.exists) {
+      res.status(404).send("Board not found");
+    } else {
+      const boardData = board.data();
+      const boardList = boardData.boardList;
+      const list = boardList.find((list) => list.id === listId);
+      if (!list) {
+        res.status(404).send("List not found");
+      } else {
+        const listTasks = list.listTasks;
+        const task = listTasks.find((task) => task.id === taskId);
+
+        if (!task) {
+          res.status(404).send("Task not found");
+        } else {
+          const taskLogs = task.taskLogs;
+          const newLog = {
+            id: uuidv4(),
+            createdAt,
+            logDoneBy,
+            logDescription,
+          };
+          taskLogs.push(newLog);
+          await boardRef.update({ boardList });
+          res.status(200).send("Task log added successfully");
+        }
+      }
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+const addPriorityToTask = async (req, res, next) => {
+  try {
+    const boardId = req.params.id;
+    const listId = req.params.listId;
+    const taskId = req.params.taskId;
+    const { priority } = req.body;
+
+    const boardRef = db.doc(boardId);
+    const board = await boardRef.get();
+    if (!board.exists) {
+      res.status(404).send("Board not found");
+    } else {
+      const boardData = board.data();
+      const boardList = boardData.boardList;
+      const list = boardList.find((list) => list.id === listId);
+      if (!list) {
+        res.status(404).send("List not found");
+      } else {
+        const listTasks = list.listTasks;
+        const task = listTasks.find((task) => task.id === taskId);
+
+        if (!task) {
+          res.status(404).send("Task not found");
+        } else {
+          task.taskPriority = priority;
+          await boardRef.update({ boardList });
+          res.status(200).send("Task priority added successfully");
+        }
+      }
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+const addStatusToTask = async (req, res, next) => {
+  try {
+    const boardId = req.params.id;
+    const listId = req.params.listId;
+    const taskId = req.params.taskId;
+    const { status } = req.body;
+
+    const boardRef = db.doc(boardId);
+    const board = await boardRef.get();
+    if (!board.exists) {
+      res.status(404).send("Board not found");
+    } else {
+      const boardData = board.data();
+      const boardList = boardData.boardList;
+      const list = boardList.find((list) => list.id === listId);
+      if (!list) {
+        res.status(404).send("List not found");
+      } else {
+        const listTasks = list.listTasks;
+        const task = listTasks.find((task) => task.id === taskId);
+
+        if (!task) {
+          res.status(404).send("Task not found");
+        } else {
+          task.taskState = status;
+          await boardRef.update({ boardList });
+          res.status(200).send("Task status added successfully");
+        }
+      }
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
 module.exports = {
   addBoard,
   getBoards,
@@ -376,4 +487,7 @@ module.exports = {
   addCheckListItemToCheckList,
   deleteCheckListFromTask,
   checkItemInCheckList,
+  addTaskLogToTask,
+  addPriorityToTask,
+  addStatusToTask,
 };

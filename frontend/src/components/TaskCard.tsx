@@ -1,20 +1,24 @@
 import React from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { setCurrentList, setCurrentTask } from "../redux/projectSlice";
 import { Task } from "../types/Task";
 import EditTask from "./EditTask";
 import EditIcon from "@mui/icons-material/Edit";
 import ReorderIcon from "@mui/icons-material/Reorder";
 import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
+import { List } from "../types/List";
+import TaskPriorityCard from "./TaskPriorityCard";
+import TaskStatusCard from "./TaskStatusCard";
 
 interface TaskCardProps {
   task: Task;
-  listId: string;
+  list: List;
   boardId: string;
 }
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
   height: fit-content;
   background-color: #282f27;
   width: 100%;
@@ -52,7 +56,8 @@ const EditTaskDisplay = styled.div`
   align-items: center;
   z-index: 999;
 `;
-const TaskCard: React.FC<TaskCardProps> = ({ task, boardId, listId }) => {
+const TaskCard: React.FC<TaskCardProps> = ({ task, boardId, list }) => {
+  const dispatch = useDispatch();
   const [showEdit, setShowEdit] = React.useState<boolean>(false);
   const totalCheckListItems = task.checklists.reduce(
     (acc, curr) => acc + curr.items.length,
@@ -71,7 +76,13 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, boardId, listId }) => {
 
   return (
     <>
-      <Container onClick={() => setShowEdit(true)}>
+      <Container
+        onClick={() => {
+          setShowEdit(true);
+          dispatch(setCurrentList(list));
+          dispatch(setCurrentTask(task));
+        }}
+      >
         <ColumnComponent>
           <RowComponent>
             <TaskTitle>{task.title}</TaskTitle>
@@ -89,6 +100,10 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, boardId, listId }) => {
                 </TaskTitle>
               </RowComponent>
             )}
+            {task.taskPriority && (
+              <TaskPriorityCard priority={task.taskPriority} />
+            )}
+            {task.taskState && <TaskStatusCard status={task.taskState} />}
           </RowComponent>
         </ColumnComponent>
       </Container>
@@ -96,7 +111,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, boardId, listId }) => {
         <EditTaskDisplay>
           <EditTask
             boardId={boardId}
-            listId={listId}
+            listId={list.id}
             task={task}
             onClose={handleCloseEditPopup}
           />

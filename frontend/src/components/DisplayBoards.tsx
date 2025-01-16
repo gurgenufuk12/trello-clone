@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { setCurrentBoard } from "../redux/projectSlice";
 import BoardCard from "./BoardCard";
 import AddBoard from "./AddBoard";
 import { Board } from "../types/Board";
-import styled from "styled-components";
 
 const Container = styled.div`
   display: grid;
@@ -32,7 +35,6 @@ const Button = styled.button`
     background-color: #2f5056;
   }
 `;
-
 const AddBoardOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -56,7 +58,10 @@ const DisplayBoards: React.FC<DisplayBoardsProps> = ({
   setSelectedBoard,
   setActiveMenu,
 }) => {
+  const dispatch = useDispatch();
+  const project = useSelector((state: RootState) => state.project);
   const [addBoardFormVisible, setAddBoardFormVisible] = useState(false);
+  console.log(project);
 
   const handleCloseAddBoardForm = () => {
     setAddBoardFormVisible(false);
@@ -75,6 +80,7 @@ const DisplayBoards: React.FC<DisplayBoardsProps> = ({
               onClick={() => {
                 setSelectedBoard(board);
                 setActiveMenu(2);
+                dispatch(setCurrentBoard(board));
               }}
             />
           ))}

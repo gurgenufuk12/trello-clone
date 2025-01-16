@@ -20,7 +20,7 @@ const TaskDisplay: React.FC<TaskDisplayProps> = ({ list, boardId }) => {
   return (
     <Container>
       {list.listTasks.map((task) => (
-        <TaskCard boardId={boardId} listId={list.id} task={task} />
+        <TaskCard boardId={boardId} list={list} task={task} />
       ))}
     </Container>
   );

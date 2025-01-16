@@ -5,9 +5,13 @@ import ActionsMenu from "./ActionsMenu";
 import TaskActivity from "./TaskActivity";
 import { Task } from "../types/Task";
 import CheckListDisplay from "./CheckListDisplay";
+import TaskPriorityCard from "./TaskPriorityCard";
+import TaskStatusCard from "./TaskStatusCard";
 import { Close } from "@mui/icons-material";
 import DescriptionIcon from "@mui/icons-material/Description";
 import TimelineIcon from "@mui/icons-material/Timeline";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 
 interface EditTaskProps {
   boardId: string;
@@ -144,6 +148,24 @@ const EditTask: React.FC<EditTaskProps> = ({
               taskId={task.id}
             />
           )}
+          {task.taskPriority && (
+            <RowContainer>
+              <FlexRow>
+                <PriorityHighIcon sx={{ color: "white" }} />
+                <HeaderText>Priority</HeaderText>
+              </FlexRow>
+              <TaskPriorityCard priority={task.taskPriority} />
+            </RowContainer>
+          )}
+          {task.taskState && (
+            <RowContainer>
+              <FlexRow>
+                <AssignmentIcon sx={{ color: "white" }} />
+                <HeaderText>Status</HeaderText>
+              </FlexRow>
+              <TaskStatusCard status={task.taskState} />
+            </RowContainer>
+          )}
           <FlexRow>
             <TimelineIcon sx={{ color: "white" }} />
             <HeaderText>Activity</HeaderText>
@@ -156,7 +178,7 @@ const EditTask: React.FC<EditTaskProps> = ({
             onCheckListClicked={handleOpenChecklist}
             boardId={boardId}
             listId={listId}
-            taskId={task.id}
+            task={task}
           />
         </RightContainer>
       </Container>

@@ -2,6 +2,7 @@ import axios from "axios";
 import { Board } from "../types/Board";
 import { List } from "../types/List";
 import { Task } from "../types/Task";
+import { TaskLogs } from "../types/Task";
 import { CheckList, CheckListItem } from "../types/Task";
 
 const API_URL = "http://localhost:8001/api/boards";
@@ -148,5 +149,57 @@ export const checkItemInCheckList = async (
     return response.data;
   } catch (error) {
     console.error("Check item in checklist error:", error);
+  }
+};
+export const addTaskLogToTask = async (
+  boardId: string,
+  listId: string,
+  taskId: string,
+  log: TaskLogs
+) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/addTaskLogToTask/${boardId}/${listId}/${taskId}`,
+      log
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Add task log to task error:", error);
+  }
+};
+export const addPriorityToTask = async (
+  boardId: string,
+  listId: string,
+  taskId: string,
+  priority: string
+) => {
+  console.log(priority);
+
+  try {
+    const response = await axios.put(
+      `${API_URL}/addPriorityToTask/${boardId}/${listId}/${taskId}`,
+      { priority }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Add priority to task error:", error);
+  }
+};
+export const addStatusToTask = async (
+  boardId: string,
+  listId: string,
+  taskId: string,
+  status: string
+) => {
+  console.log(status);
+
+  try {
+    const response = await axios.put(
+      `${API_URL}/addStatusToTask/${boardId}/${listId}/${taskId}`,
+      { status }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Add priority to task error:", error);
   }
 };

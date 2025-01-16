@@ -1,5 +1,6 @@
 import React from "react";
-import { addCheckListToTask } from "../services/BoardService";
+import { AuthContext } from "../contexts/AuthContext";
+import { addCheckListToTask, addTaskLogToTask } from "../services/BoardService";
 import styled from "styled-components";
 import { Close } from "@mui/icons-material";
 
@@ -40,6 +41,7 @@ const Input = styled.input`
 const Button = styled.button`
   width: fit-content;
   display: flex;
+  margin-left: auto;
   align-items: center;
   background-color: #ff4757;
   color: white;
@@ -58,6 +60,8 @@ const AddCheckListPopUp: React.FC<AddCheckListPopUpProps> = ({
   taskId,
   onCheckListClicked,
 }) => {
+  const authContext = React.useContext(AuthContext);
+  const currentUser = authContext?.userProfile;
   const [checkListTitle, setCheckListTitle] = React.useState("");
 
   const addCheckListToTaskHandler = async () => {
@@ -66,8 +70,15 @@ const AddCheckListPopUp: React.FC<AddCheckListPopUpProps> = ({
       title: checkListTitle,
       items: [],
     };
+    const taskLog = {
+      id: "",
+      createdAt: new Date(),
+      logDoneBy: currentUser?.email,
+      logDescription: `${currentUser?.email} added checklist ${checkListTitle}`,
+    };
     if (checkListTitle) {
       await addCheckListToTask(boardId, listId, taskId, newCheckList);
+      await addTaskLogToTask(boardId, listId, taskId, taskLog);
       onCheckListClicked();
       onClose();
     }
