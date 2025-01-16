@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import { AuthContext } from "../contexts/AuthContext";
 import { RootState } from "../redux/store";
-import { addPriorityToTask } from "../services/BoardService";
+import { addPriorityToTask, addTaskLogToTask } from "../services/BoardService";
 import { Close } from "@mui/icons-material";
 interface AddPriorityProps {
   onClose: () => void;
@@ -48,6 +49,8 @@ const Button = styled.button`
   cursor: pointer;
 `;
 const AddPriority: React.FC<AddPriorityProps> = ({ onClose }) => {
+  const authContext = useContext(AuthContext);
+  const currentUser = authContext?.userProfile;
   const [priority, setPriority] = React.useState("");
   const project = useSelector((state: RootState) => state.project);
   const currentBoard = project.currentBoard;
@@ -64,6 +67,18 @@ const AddPriority: React.FC<AddPriorityProps> = ({ onClose }) => {
         currentList.id,
         currentTask.id,
         priority
+      );
+      const taskLog = {
+        id: "",
+        createdAt: new Date(),
+        logDoneBy: currentUser?.email,
+        logDescription: `${currentUser?.email} changed the priority to  ${priority}`,
+      };
+      await addTaskLogToTask(
+        currentBoard.id,
+        currentList.id,
+        currentTask.id,
+        taskLog
       );
       onClose();
     }

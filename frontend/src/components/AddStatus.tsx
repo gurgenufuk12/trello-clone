@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import { AuthContext } from "../contexts/AuthContext";
 import { RootState } from "../redux/store";
-import { addStatusToTask } from "../services/BoardService";
+import { addStatusToTask, addTaskLogToTask } from "../services/BoardService";
 import { Close } from "@mui/icons-material";
 interface AddStatusProps {
   onClose: () => void;
@@ -48,6 +49,8 @@ const Button = styled.button`
   cursor: pointer;
 `;
 const AddStatus: React.FC<AddStatusProps> = ({ onClose }) => {
+  const authContext = React.useContext(AuthContext);
+  const currentUser = authContext?.userProfile;
   const [status, setStatus] = React.useState("");
   const project = useSelector((state: RootState) => state.project);
   const currentBoard = project.currentBoard;
@@ -59,12 +62,29 @@ const AddStatus: React.FC<AddStatusProps> = ({ onClose }) => {
   };
   const handleAddStatus = async () => {
     if (currentBoard && currentList && currentTask) {
-      await addStatusToTask(
-        currentBoard.id,
-        currentList.id,
-        currentTask.id,
-        status
-      );
+      try {
+        await addStatusToTask(
+          currentBoard.id,
+          currentList.id,
+          currentTask.id,
+          status
+        );
+        const taskLog = {
+          id: "",
+          createdAt: new Date(),
+          logDoneBy: currentUser?.email,
+          logDescription: `${currentUser?.email} changed the status to  ${status}`,
+        };
+        await addTaskLogToTask(
+          currentBoard.id,
+          currentList.id,
+          currentTask.id,
+          taskLog
+        );
+        onClose();
+      } catch (error) {
+        console.error(error);
+      }
       onClose();
     }
   };
