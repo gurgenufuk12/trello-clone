@@ -7,6 +7,7 @@ import {
 import { AuthProvider, AuthContext } from "./contexts/AuthContext";
 import LoginPage from "./pages/auth/login";
 import Dashboard from "./pages/Dashboard";
+import InvitePage from "./pages/InvitePage";
 import RegisterPage from "./pages/auth/register";
 import "./App.css";
 
@@ -48,6 +49,7 @@ const AppRoutes = () => {
         path="/register"
         element={user ? <Navigate to="/dashboard" /> : <RegisterPage />}
       />
+      <Route path="/invite/:inviteId" element={<InvitePage />} />
       {/* <Route
         path="/board/:id/:title"
         element={user ? <BoardDetail /> : <Navigate to="/login" />}

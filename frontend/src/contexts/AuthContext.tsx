@@ -8,6 +8,7 @@ import {
 import { auth } from "../firebase/firebaseConfig";
 import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
 import { User } from "../types/User";
+import { acceptBoardInvite } from "../services/InviteService";
 
 interface AuthContextType {
   user: User | null;
@@ -57,10 +58,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       }
       setLoading(false);
     });
-  
+
     return () => unsubscribe();
   }, [db]);
-  
 
   const login = async (email: string, password: string) => {
     try {
@@ -96,19 +96,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         createdAt: new Date(),
         updatedAt: new Date(),
       };
+
       await setDoc(doc(db, "users", result.user.uid), newUserProfile);
-      setUser({
-        id: result.user.uid,
-        fullName: result.user.displayName || "",
-        email: result.user.email || "",
-        boards: [],
-        boardRoles: [],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+
+      // Handle pending invite
+      const pendingInvite = localStorage.getItem("pendingInvite");
+      if (pendingInvite) {
+        const { inviteId, boardId } = JSON.parse(pendingInvite);
+        await acceptBoardInvite(inviteId, result.user.uid);
+        localStorage.removeItem("pendingInvite");
+        window.location.href = `/board/${boardId}`;
+      }
+
+      setUser(newUserProfile);
       setUserProfile(newUserProfile);
     } catch (error) {
       console.error("Register error:", error);
+      throw error;
     }
   };
   const logout = async () => {

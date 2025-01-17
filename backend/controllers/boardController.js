@@ -32,15 +32,20 @@ const addBoard = async (req, res, next) => {
   }
 };
 const getBoards = async (req, res, next) => {
+  // get boards if board.boardUsers contains userId or board.boardAdmin.id === userId
   try {
-    const boardsSnapshot = await db.get();
+    const userId = req.params.userId;
     const boards = [];
-    boardsSnapshot.forEach((doc) => {
-      boards.push({ id: doc.id, ...doc.data() });
+    const boardRef = await db.get();
+    boardRef.forEach((doc) => {
+      const board = doc.data();
+      if (board.boardUsers.includes(userId) || board.boardAdmin.id === userId) {
+        boards.push(board);
+      }
     });
     res.status(200).json(boards);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch boards" });
+    res.status(400).send(error.message);
   }
 };
 const addListToBoardWithId = async (req, res, next) => {

@@ -100,9 +100,9 @@ const Navbar: React.FC<NavbarProps> = ({
   setBoards,
 }) => {
   const authContext = useContext(AuthContext);
+  const userProfile = authContext?.userProfile;
   const dispatch = useDispatch();
   const project = useSelector((state: RootState) => state.project);
-  console.log(project);
 
   const handleLogout = async () => {
     try {
@@ -114,13 +114,12 @@ const Navbar: React.FC<NavbarProps> = ({
 
   const fetchBoards = async () => {
     try {
-      const response = await getBoards();
-      setBoards(response);
-    } catch (error: unknown) {
-      console.error("Fetch boards error", error);
+      const boards = await getBoards(userProfile?.id || "");
+      setBoards(boards);
+    } catch (error) {
+      console.error("Fetch boards error:", error);
     }
   };
-
   useEffect(() => {
     fetchBoards();
   }, []);

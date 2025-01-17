@@ -11,9 +11,11 @@ interface BoardListProps {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 350px;
-  height: fit-content;
   background-color: #101204;
+  min-width: 350px;
+  max-width: 350px;
+  flex-shrink: 0;
+  height: fit-content;
   color: #b4c0cd;
   border: 1px solid white;
   padding: 10px;

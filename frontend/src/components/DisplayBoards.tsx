@@ -61,7 +61,6 @@ const DisplayBoards: React.FC<DisplayBoardsProps> = ({
   const dispatch = useDispatch();
   const project = useSelector((state: RootState) => state.project);
   const [addBoardFormVisible, setAddBoardFormVisible] = useState(false);
-  console.log(project);
 
   const handleCloseAddBoardForm = () => {
     setAddBoardFormVisible(false);

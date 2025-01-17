@@ -6,7 +6,7 @@ export interface Board {
   title: string;
   description: string;
   boardAdmin: User;
-  boardUsers: User[];
+  boardUsers: string[];
   boardList: List[];
   createdAt: Date;
   updatedAt: Date;

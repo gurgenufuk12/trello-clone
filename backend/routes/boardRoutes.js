@@ -18,7 +18,7 @@ const { addStatusToTask } = require("../controllers/boardController");
 const router = express.Router();
 
 router.post("/addBoard", addBoard);
-router.get("/getBoards", getBoards);
+router.get("/getBoards/:userId", getBoards);
 router.post("/addListToBoardWithId/:id", addListToBoardWithId);
 router.get("/getListFromBoardWithId/:id", getListFromBoardWithId);
 router.post("/addTaskToListWithId/:id/:listId", addTaskToListWithId);

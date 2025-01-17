@@ -7,9 +7,9 @@ import { CheckList, CheckListItem } from "../types/Task";
 
 const API_URL = "http://localhost:8001/api/boards";
 
-export const getBoards = async () => {
+export const getBoards = async (userId: string) => {
   try {
-    const response = await axios.get(`${API_URL}/getBoards`);
+    const response = await axios.get(`${API_URL}/getBoards/${userId}`);
     return response.data;
   } catch (error) {
     console.error("Get boards error:", error);
