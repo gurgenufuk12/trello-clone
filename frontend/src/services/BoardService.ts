@@ -203,3 +203,40 @@ export const addStatusToTask = async (
     console.error("Add priority to task error:", error);
   }
 };
+export const getBoardUsersWithBoardId = async (boardId: string) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/getBoardUsersWithBoardId/${boardId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Get board users with board id error:", error);
+  }
+};
+export const getUsersByUserId = async (usersArray: string[]) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/getUsersByUserId`,
+      usersArray
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Get users by user id error:", error);
+  }
+};
+export const assignPersonToTask = async (
+  boardId: string,
+  listId: string,
+  taskId: string,
+  userId: string
+) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}/assignPersonToTask/${boardId}/${listId}/${taskId}`,
+      { userId }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Assign person to task error:", error);
+  }
+};

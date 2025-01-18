@@ -481,6 +481,70 @@ const addStatusToTask = async (req, res, next) => {
     res.status(400).send(error.message);
   }
 };
+const getBoardUsersWithBoardId = async (req, res, next) => {
+  try {
+    const boardId = req.params.id;
+    const boardRef = db.doc(boardId);
+    const board = await boardRef.get();
+    if (!board.exists) {
+      res.status(404).send("Board not found");
+    } else {
+      const boardData = board.data();
+      res.status(200).json(boardData.boardUsers);
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+const getUsersByUserId = async (req, res, next) => {
+  try {
+    const data = req.body;
+
+    const users = [];
+    for (let i = 0; i < data.length; i++) {
+      const userRef = await firebase.collection("users").doc(data[i]).get();
+      const user = userRef.data();
+      users.push(user);
+    }
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+const assignPersonToTask = async (req, res, next) => {
+  try {
+    const boardId = req.params.id;
+    const listId = req.params.listId;
+    const taskId = req.params.taskId;
+    const { userId } = req.body;
+
+    const boardRef = db.doc(boardId);
+    const board = await boardRef.get();
+    if (!board.exists) {
+      res.status(404).send("Board not found");
+    } else {
+      const boardData = board.data();
+      const boardList = boardData.boardList;
+      const list = boardList.find((list) => list.id === listId);
+      if (!list) {
+        res.status(404).send("List not found");
+      } else {
+        const listTasks = list.listTasks;
+        const task = listTasks.find((task) => task.id === taskId);
+
+        if (!task) {
+          res.status(404).send("Task not found");
+        } else {
+          task.assignedTo = userId;
+          await boardRef.update({ boardList });
+          res.status(200).send("Task assigned successfully");
+        }
+      }
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
 module.exports = {
   addBoard,
   getBoards,
@@ -495,4 +559,7 @@ module.exports = {
   addTaskLogToTask,
   addPriorityToTask,
   addStatusToTask,
+  getBoardUsersWithBoardId,
+  getUsersByUserId,
+  assignPersonToTask,
 };

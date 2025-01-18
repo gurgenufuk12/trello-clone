@@ -15,6 +15,9 @@ const { checkItemInCheckList } = require("../controllers/boardController");
 const { addTaskLogToTask } = require("../controllers/boardController");
 const { addPriorityToTask } = require("../controllers/boardController");
 const { addStatusToTask } = require("../controllers/boardController");
+const { getBoardUsersWithBoardId } = require("../controllers/boardController");
+const { getUsersByUserId } = require("../controllers/boardController");
+const { assignPersonToTask } = require("../controllers/boardController");
 const router = express.Router();
 
 router.post("/addBoard", addBoard);
@@ -39,4 +42,8 @@ router.put(
 router.post("/addTaskLogToTask/:id/:listId/:taskId", addTaskLogToTask);
 router.put("/addPriorityToTask/:id/:listId/:taskId", addPriorityToTask);
 router.put("/addStatusToTask/:id/:listId/:taskId", addStatusToTask);
+router.get("/getBoardUsersWithBoardId/:id", getBoardUsersWithBoardId);
+router.post("/getUsersByUserId", getUsersByUserId);
+router.put("/assignPersonToTask/:id/:listId/:taskId", assignPersonToTask);
+
 module.exports = router;
