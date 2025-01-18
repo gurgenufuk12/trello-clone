@@ -16,7 +16,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 20px;
+  height: 10px;
   background-color: #3b444c;
   border-radius: 10px;
 `;

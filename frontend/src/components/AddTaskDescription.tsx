@@ -13,42 +13,64 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: fit-content;
-  background-color: #323940;
-  border-radius: 10px;
-  padding: 10px;
-  gap: 10px;
+  background-color: #1e2124;
+  border-radius: 8px;
+  padding: 16px;
+  gap: 12px;
+  border: 1px solid #2f3336;
 `;
-const Input = styled.input`
-  width: 100%;
-  height: 60px;
-  background-color: #323940;
-  color: white;
-  border: none;
-  font-family: "Poppins", sans-serif;
-  border: 1px solid white;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 1rem;
-`;
-const RowContainer = styled.span`
-  display: flex;
-  flex-direction: row;
-  gap: 10px;P
 
+const TextArea = styled.textarea`
+  width: 100%;
+  min-height: 120px;
+  background-color: #282f27;
+  color: #ffffff;
+  border: 1px solid #3f4447;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "Poppins", sans-serif;
+  resize: vertical;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: #8b949e;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #ff4757;
+  }
 `;
-const Button = styled.button<{ isClose: boolean }>`
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+`;
+
+const Button = styled.button<{ isClose?: boolean }>`
   display: flex;
   align-items: center;
-  background-color: ${(props) => (props.isClose ? "transparent" : "#ff4757")};
+  justify-content: center;
+  padding: 8px 16px;
+  background-color: ${(props) => (props.isClose ? "#282f27" : "#ff4757")};
   color: white;
   font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
-  font-size: 0.8rem;
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
+  font-size: 14px;
+  border: ${(props) => (props.isClose ? "1px solid #3f4447" : "none")};
+  border-radius: 6px;
   cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: ${(props) => (props.isClose ? "#353b34" : "#ff6b81")};
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 `;
 const AddTaskDescription: React.FC<AddTaskDescriptionProps> = ({
   boardId,
@@ -75,25 +97,17 @@ const AddTaskDescription: React.FC<AddTaskDescriptionProps> = ({
   };
   return (
     <Container>
-      <Input
-        type="text"
-        placeholder="Add a description"
+      <TextArea
+        placeholder="Add a more detailed description..."
         value={taskDescription}
         onChange={(e) => setTaskDescription(e.target.value)}
-      ></Input>
-      <RowContainer>
-        <Button
-          isClose={false}
-          onClick={() => {
-            addTaskDescription();
-          }}
-        >
-          Save
+      />
+      <ButtonContainer>
+        <Button onClick={addTaskDescription}>Save</Button>
+        <Button isClose onClick={onClose}>
+          Cancel
         </Button>
-        <Button isClose={true} onClick={() => onClose()}>
-          Close
-        </Button>
-      </RowContainer>
+      </ButtonContainer>
     </Container>
   );
 };

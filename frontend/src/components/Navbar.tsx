@@ -25,48 +25,54 @@ const Container = styled.div`
   flex-direction: column;
   width: 300px;
   height: 100vh;
-  padding-left: 10px;
-  padding-right: 10px;
-  background-color: #221d24;
-  align-items: center;
-  border-right: 1px solid gray;
+  padding: 20px;
+  background-color: #1e2124;
+  border-right: 1px solid #2f3336;
 `;
 
 const NavbarMenu = styled.div`
   display: flex;
-  margin-top: 20px;
-  width: 100%;
-  gap: 10px;
   flex-direction: column;
+  width: 100%;
+  gap: 8px;
+  margin-top: 24px;
+`;
+
+const HeaderText = styled.h3`
+  color: #8b949e;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 16px 0 8px 12px;
+`;
+
+const LogoutButton = styled.button`
+  display: flex;
   align-items: center;
-`;
-
-const Header = styled.span`
-  color: white;
-  align-self: flex-start;
-  font-size: 16px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  margin-top: 20px;
-`;
-
-const Button = styled.button`
-  width: fit-content;
-  padding: 10px 20px;
-  border-radius: 20px;
-  height: 40px;
-  border: none;
-  background-color: #0077cc;
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
   margin-top: auto;
-  margin-bottom: 10px;
-`;
-const HeaderText = styled.span`
+  background: #ff4757;
   color: white;
-  font-size: 16px;
-  align-self: flex-start;
+  border: none;
+  border-radius: 6px;
   font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  margin-top: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: #ff6b81;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 `;
 const NavbarItems = [
   {
@@ -126,7 +132,6 @@ const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <Container>
-      <Header>Trello Clone</Header>
       <NavbarMenu>
         {NavbarItems.map((item, index) => (
           <NavbarItem
@@ -140,6 +145,7 @@ const Navbar: React.FC<NavbarProps> = ({
             }}
           />
         ))}
+
         <HeaderText>Boards</HeaderText>
         {boards.map((board) => (
           <NavbarItem
@@ -155,7 +161,8 @@ const Navbar: React.FC<NavbarProps> = ({
           />
         ))}
       </NavbarMenu>
-      <Button onClick={handleLogout}>Logout</Button>
+
+      <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
     </Container>
   );
 };

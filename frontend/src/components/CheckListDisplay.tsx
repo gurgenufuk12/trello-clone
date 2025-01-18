@@ -19,65 +19,91 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: fit-content;
-  background-color: transparent;
-  border-radius: 10px;
-  gap: 10px;
+  gap: 16px;
 `;
-const OuterContainer = styled.div`
+
+const CheckListContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: fit-content;
-  background-color: transparent;
-  border-radius: 10px;
-  gap: 10px;
+  gap: 12px;
+  background-color: #282f27;
+  border-radius: 8px;
+  padding: 16px;
 `;
-const InnerContainer = styled.div`
+
+const ItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: fit-content;
-  background-color: transparent;
-  border-radius: 10px;
-  padding: 0px 20px;
+  gap: 8px;
+  margin-top: 8px;
 `;
-const RowContainer = styled.div`
+
+const Header = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  width: 100%;
 `;
-const Button = styled.button`
+
+const DeleteButton = styled.button`
   display: flex;
-  margin-left: auto;
+  align-items: center;
+  padding: 6px 12px;
   background-color: #ff4757;
   color: white;
   font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
-  font-size: 0.8rem;
+  font-size: 13px;
   border: none;
-  border-radius: 5px;
-  padding: 5px;
+  border-radius: 4px;
   cursor: pointer;
+  margin-left: auto;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #ff6b81;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 `;
-const CheckListHeader = styled.span`
+
+const Title = styled.span`
   font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
   color: white;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: 500;
 `;
-const CheckListItem = styled.span<{ isChecked: boolean }>`
-  font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
-  text-decoration: ${(props) => (props.isChecked ? "line-through" : "none")};
-  color: white;
-  font-size: 0.8rem;
+
+const CheckItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #353b34;
+  }
 `;
-const CheckBoxInput = styled.input`
+
+const Checkbox = styled.input`
   width: 16px;
   height: 16px;
+  cursor: pointer;
+  accent-color: #ff4757;
+`;
+
+const ItemText = styled.span<{ isChecked: boolean }>`
+  font-family: "Poppins", sans-serif;
+  color: ${(props) => (props.isChecked ? "#8b949e" : "white")};
+  font-size: 14px;
+  text-decoration: ${(props) => (props.isChecked ? "line-through" : "none")};
+  transition: all 0.2s;
 `;
 const CheckListDisplay: React.FC<CheckListDisplayProps> = ({
   boardId,
@@ -120,45 +146,46 @@ const CheckListDisplay: React.FC<CheckListDisplayProps> = ({
   return (
     <Container>
       {checkLists.map((checkList) => (
-        <>
-          <OuterContainer key={checkList.id}>
-            <RowContainer>
+        <React.Fragment key={checkList.id}>
+          <CheckListContainer>
+            <Header>
               <CheckBoxOutlinedIcon sx={{ color: "white" }} />
-              <CheckListHeader>{checkList.title}</CheckListHeader>
-              <Button onClick={() => handleDeleteCheckList(checkList.id)}>
+              <Title>{checkList.title}</Title>
+              <DeleteButton onClick={() => handleDeleteCheckList(checkList.id)}>
                 Delete
-              </Button>
-            </RowContainer>
+              </DeleteButton>
+            </Header>
+
             <ProgressBar
               progress={
                 checkList.items.filter((item) => item.isChecked).length /
                 checkList.items.length
               }
             />
-            {checkList.items.map((item) => (
-              <InnerContainer key={item.id}>
-                <RowContainer>
-                  <CheckBoxInput
+
+            <ItemsContainer>
+              {checkList.items.map((item) => (
+                <CheckItem key={item.id}>
+                  <Checkbox
+                    type="checkbox"
                     defaultChecked={item.isChecked}
-                    onClick={() =>
+                    onChange={() =>
                       handleCheckItem(checkList.id, item.id, !item.isChecked)
                     }
-                    type="checkbox"
                   />
-                  <CheckListItem isChecked={item.isChecked}>
-                    {item.title}
-                  </CheckListItem>
-                </RowContainer>
-              </InnerContainer>
-            ))}
-          </OuterContainer>
+                  <ItemText isChecked={item.isChecked}>{item.title}</ItemText>
+                </CheckItem>
+              ))}
+            </ItemsContainer>
+          </CheckListContainer>
+
           <AddCheckListItem
             boardId={boardId}
             listId={listId}
             taskId={taskId}
             checkListId={checkList.id}
           />
-        </>
+        </React.Fragment>
       ))}
     </Container>
   );

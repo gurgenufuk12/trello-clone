@@ -12,56 +12,82 @@ interface ListFormProps {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: transparent;
-  padding: 10px;
-  gap: 20px;
+  width: 100%;
+  gap: 12px;
+  padding: 8px;
+  background-color: #282f27;
+  border-radius: 8px;
+  border: 1px solid #3f4447;
 `;
 
-const Input = styled.textarea`
-  display: flex;
-  flex-direction: column;
-  background-color: #221d24;
-  border: none;
-  padding: 10px;
-  border-radius: 10px;
+const Input = styled.input`
+  width: 100%;
+  padding: 12px;
+  background-color: #1e2124;
   color: white;
+  border: 1px solid #3f4447;
+  border-radius: 6px;
   font-family: "Poppins", sans-serif;
-  resize: none;
-`;
-const Button = styled.button`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: #ff4757;
-  opacity: 0.9;
-  color: white;
-  font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
-  font-size: 0.8rem;
-  border: none;
-  border-radius: 5px;
-  gap: 5px;
-  padding: 5px;
-  cursor: pointer;
-  &:hover {
-    opacity: 1;
+  font-size: 14px;
+  transition: all 0.2s;
+
+  &::placeholder {
+    color: #8b949e;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #ff4757;
   }
 `;
+
 const RowComponent = styled.div`
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 8px;
 `;
+
+const Button = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #ff4757;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #ff6b81;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
 const ButtonText = styled.span`
   color: white;
   font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
+  font-size: 14px;
+  font-weight: 500;
 `;
+
 const CloseButton = styled.button`
-  color: white;
-  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: transparent;
   border: none;
   cursor: pointer;
-  margin-left: auto;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 const ListForm: React.FC<ListFormProps> = ({ boardId, id, onClose }) => {
   const authContext = useContext(AuthContext);

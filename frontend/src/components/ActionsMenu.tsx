@@ -4,13 +4,17 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import AddCheckListPopUp from "./AddCheckListPopUp";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import AddPriority from "./AddPriority";
 import AddStatus from "./AddStatus";
 import { Task } from "../types/Task";
+import AssignPersonToTask from "./AssignPersonToTask";
+import { User } from "../types/User";
 interface ActionsMenuProps {
   boardId: string;
   listId: string;
   task: Task;
+  boardUsers: User[];
   onCheckListClicked: () => void;
 }
 const Container = styled.div`
@@ -46,13 +50,19 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({
   boardId,
   listId,
   task,
+  boardUsers,
 }) => {
   const [open, setOpen] = React.useState(false);
   const [priorityOpen, setPriorityOpen] = React.useState(false);
   const [statusOpen, setStatusOpen] = React.useState(false);
+  const [assignOpen, setAssignOpen] = React.useState(false);
 
   return (
     <Container>
+      <ActionMenuItem onClick={() => setAssignOpen(true)}>
+        <AssignmentIndIcon sx={{ color: "white" }} />
+        <ActionMenuItemText>Assign Task</ActionMenuItemText>
+      </ActionMenuItem>
       <ActionMenuItem onClick={() => setOpen(true)}>
         <ChecklistIcon sx={{ color: "white" }} />
         <ActionMenuItemText>Add Checklist</ActionMenuItemText>
@@ -76,6 +86,15 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({
       )}
       {priorityOpen && <AddPriority onClose={() => setPriorityOpen(false)} />}
       {statusOpen && <AddStatus onClose={() => setStatusOpen(false)} />}
+      {assignOpen && (
+        <AssignPersonToTask
+        boardId={boardId}
+        listId={listId}
+        taskId={task.id}
+          boardUsers={boardUsers}
+          onClose={() => setAssignOpen(false)}
+        />
+      )}
     </Container>
   );
 };

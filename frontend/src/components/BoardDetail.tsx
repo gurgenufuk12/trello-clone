@@ -17,27 +17,30 @@ interface BoardDetailProps {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: calc(100% - 300px); // 300px is navbar width
-  margin-left: 300px; // Match navbar width
+  width: calc(100% - 250px);
+  margin-left: 300px;
   height: 100vh;
-  background-color: #221d24;
+  background-color: #1e2124;
   position: fixed;
   right: 0;
 `;
+
 const Header = styled.div`
   display: flex;
   align-items: center;
-  padding: 20px;
-  height: 50px;
+  padding: 20px 24px;
+  height: 64px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid #2f3336;
 `;
 
 const Component = styled.div`
   display: flex;
   flex-direction: row;
   gap: 20px;
-  padding: 20px;
+  padding: 24px;
   overflow-x: auto;
-  min-height: calc(100vh - 50px);
+  height: calc(100vh - 64px);
 
   &::-webkit-scrollbar {
     height: 8px;
@@ -51,56 +54,86 @@ const Component = styled.div`
   &::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
   }
 `;
+
 const HeaderActions = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin-left: auto;
 `;
 
 const InviteButton = styled.button`
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   padding: 8px 16px;
   background: #ff4757;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   color: white;
   cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  transition: all 0.2s;
 
   &:hover {
     background: #ff6b81;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
+
 const AddListWrapper = styled.button<{ onOpen: boolean }>`
-  min-width: 250px;
+  min-width: 280px;
   height: fit-content;
   flex-shrink: 0;
   background-color: ${(props) => (props.onOpen ? "#282f27" : "#ff4757")};
   border: none;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 16px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 `;
 
 const Title = styled.h1`
   color: white;
   font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
 `;
 
 const RowComponent = styled.div`
   display: flex;
   align-items: center;
+  gap: 8px;
+  justify-content: center;
 `;
 
 const ButtonText = styled.span`
   color: white;
   font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
+  font-size: 14px;
+  font-weight: 500;
 `;
 
 const BoardDetail: React.FC<BoardDetailProps> = ({ board }) => {
@@ -139,12 +172,14 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ board }) => {
           </InviteButton>
         </HeaderActions>
       </Header>
+
       {showInviteModal && (
         <InviteModal
           boardId={board.id}
           onClose={() => setShowInviteModal(false)}
         />
       )}
+
       <Component>
         <AddListWrapper onOpen={showForm} onClick={() => setShowForm(true)}>
           {showForm ? (
@@ -156,6 +191,7 @@ const BoardDetail: React.FC<BoardDetailProps> = ({ board }) => {
             </RowComponent>
           )}
         </AddListWrapper>
+
         {boardLists.map((list, index) => (
           <BoardList key={index} list={list} boardId={board.id} />
         ))}

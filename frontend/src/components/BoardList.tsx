@@ -11,45 +11,48 @@ interface BoardListProps {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #101204;
-  min-width: 350px;
-  max-width: 350px;
-  flex-shrink: 0;
-  height: fit-content;
-  color: #b4c0cd;
-  border: 1px solid white;
-  padding: 10px;
-  border-radius: 20px;
-  gap: 10px;
-`;
-const ListHeader = styled.span`
-  width: fit-content;
-  font-family: "Poppins", sans-serif;
-  color: #b4c0cd
-  font-weight: bold;
+  min-width: 280px;
+  max-height: calc(100vh - 120px);
+  background-color: #282f27;
+  border-radius: 8px;
+  padding: 16px;
+  gap: 12px;
+  border: 1px solid #2f3336;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const Button = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background-color: transparent;
+const ListHeader = styled.div`
   color: white;
   font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
-  font-size: 0.8rem;
-  border: none;
-  border-radius: 5px;
-  padding: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #2f3336;
+`;
+
+const Button = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  background-color: transparent;
+  border: 1px solid #3f4447;
+  border-radius: 6px;
   cursor: pointer;
+  transition: all 0.2s;
+
   &:hover {
-    background-color: #ff4757;
+    background-color: #353b34;
+    border-color: #ff4757;
   }
 `;
+
 const ButtonText = styled.span`
   color: white;
   font-family: "Poppins", sans-serif;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 500;
 `;
 
 const BoardList: React.FC<BoardListProps> = ({ list, boardId }) => {
@@ -62,16 +65,16 @@ const BoardList: React.FC<BoardListProps> = ({ list, boardId }) => {
     <Container>
       <ListHeader>{list.title}</ListHeader>
       <TaskDisplay list={list} boardId={boardId} />
-      {showDropdown && (
-        <ListForm boardId={boardId} id={id} onClose={handleCloseDropdown} />
-      )}
-      {!showDropdown && (
+
+      {showDropdown ? (
+        <ListForm
+          boardId={boardId}
+          id={id}
+          onClose={() => handleCloseDropdown()}
+        />
+      ) : (
         <Button onClick={() => setShowDropdown(true)}>
-          <Add
-            sx={{
-              color: "white",
-            }}
-          />
+          <Add sx={{ color: "white" }} />
           <ButtonText>Add Task</ButtonText>
         </Button>
       )}

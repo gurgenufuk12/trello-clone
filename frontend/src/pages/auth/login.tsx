@@ -3,6 +3,88 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import styled from "styled-components";
 
+export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #1e2124;
+`;
+
+export const Form = styled.form`
+  width: 400px;
+  padding: 32px;
+  border-radius: 12px;
+  background-color: #282f27;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid #3f4447;
+`;
+
+export const Title = styled.h1`
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 32px;
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  background-color: #1e2124;
+  border: 1px solid #3f4447;
+  border-radius: 8px;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  transition: all 0.2s;
+
+  &::placeholder {
+    color: #8b949e;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: #ff4757;
+    box-shadow: 0 0 0 2px rgba(255, 71, 87, 0.2);
+  }
+`;
+
+export const Button = styled.button<{ isSecondary?: boolean }>`
+  width: 100%;
+  padding: 14px;
+  margin: 8px 0;
+  background-color: ${(props) =>
+    props.isSecondary ? "transparent" : "#ff4757"};
+  color: white;
+  border: ${(props) => (props.isSecondary ? "1px solid #ff4757" : "none")};
+  border-radius: 8px;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: ${(props) =>
+      props.isSecondary ? "rgba(255, 71, 87, 0.1)" : "#ff6b81"};
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+export const Error = styled.div`
+  color: #ff4757;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  text-align: center;
+  margin: 8px 0;
+`;
 const LoginPage = () => {
   const authContext = useContext(AuthContext);
   const login = authContext?.login;
@@ -31,7 +113,7 @@ const LoginPage = () => {
   return (
     <Container>
       <Form onSubmit={handleLogin}>
-        <Title>Login</Title>
+        <Title>Welcome Back</Title>
         <Input
           type="email"
           placeholder="Email"
@@ -45,62 +127,13 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
         />
         {error && <Error>{error}</Error>}
-        <Button type="submit">Login</Button>
-        <Button type="button" onClick={() => navigate("/register")}>
-          Register
+        <Button type="submit">Sign In</Button>
+        <Button type="button" isSecondary onClick={() => navigate("/register")}>
+          Create Account
         </Button>
       </Form>
     </Container>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
-
-const Form = styled.form`
-  width: 300px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  margin-bottom: 20px;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-`;
-
-const Button = styled.button`
-  width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
-const Error = styled.div`
-  color: red;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 10px;
-`;
 
 export default LoginPage;

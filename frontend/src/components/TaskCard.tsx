@@ -19,32 +19,70 @@ interface TaskCardProps {
 
 const Container = styled.div`
   display: flex;
-  height: fit-content;
-  background-color: #282f27;
+  background-color: #1e2124;
   width: 100%;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #2f3336;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
   &:hover {
-    border: 1px solid white;
+    transform: translateY(-2px);
+    border-color: #ff4757;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 `;
-const ColumnComponent = styled.div`
+
+const Content = styled.div`
   display: flex;
   flex-direction: column;
-`;
-const RowComponent = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2px;
+  width: 100%;
+  gap: 8px;
 `;
 
-const TaskTitle = styled.span`
-  font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
-  color: white;
-  font-size: 0.8rem;
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 `;
+
+const Title = styled.span`
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  color: white;
+  font-size: 14px;
+`;
+
+const MetadataRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+`;
+
+const MetadataItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: #282f27;
+  border-radius: 4px;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #353b34;
+  }
+`;
+
+const TaskCount = styled.span`
+  font-family: "Poppins", sans-serif;
+  color: #b9bbbe;
+  font-size: 12px;
+`;
+
 const EditTaskDisplay = styled.div`
   position: fixed;
   top: 0;
@@ -54,6 +92,8 @@ const EditTaskDisplay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   z-index: 999;
 `;
 const TaskCard: React.FC<TaskCardProps> = ({ task, boardId, list }) => {
@@ -83,30 +123,39 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, boardId, list }) => {
           dispatch(setCurrentTask(task));
         }}
       >
-        <ColumnComponent>
-          <RowComponent>
-            <TaskTitle>{task.title}</TaskTitle>
-            <EditIcon sx={{ color: "white", width: "18px" }} />
-          </RowComponent>
-          <RowComponent>
+        <Content>
+          <Header>
+            <Title>{task.title}</Title>
+            <EditIcon sx={{ color: "#8b949e", width: "16px" }} />
+          </Header>
+
+          <MetadataRow>
             {task.description && (
-              <ReorderIcon sx={{ color: "white", width: "18px" }} />
+              <MetadataItem>
+                <ReorderIcon sx={{ color: "#8b949e", width: "16px" }} />
+              </MetadataItem>
             )}
+
             {totalCheckListItems > 0 && (
-              <RowComponent>
-                <CheckBoxOutlinedIcon sx={{ color: "white", width: "18px" }} />
-                <TaskTitle>
+              <MetadataItem>
+                <CheckBoxOutlinedIcon
+                  sx={{ color: "#8b949e", width: "16px" }}
+                />
+                <TaskCount>
                   {totalCheckedItems}/{totalCheckListItems}
-                </TaskTitle>
-              </RowComponent>
+                </TaskCount>
+              </MetadataItem>
             )}
+
             {task.taskPriority && (
               <TaskPriorityCard priority={task.taskPriority} />
             )}
+
             {task.taskState && <TaskStatusCard status={task.taskState} />}
-          </RowComponent>
-        </ColumnComponent>
+          </MetadataRow>
+        </Content>
       </Container>
+
       {showEdit && (
         <EditTaskDisplay>
           <EditTask

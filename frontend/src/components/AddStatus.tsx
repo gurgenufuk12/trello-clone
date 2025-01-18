@@ -14,39 +14,90 @@ const Container = styled.div`
   right: 0;
   display: flex;
   flex-direction: column;
-  width: 250px;
-  height: 200px;
-  background-color: #2f3239;
-  border-radius: 10px;
-  padding: 10px;
-  gap: 10px;
+  width: 280px;
+  background-color: #1e2124;
+  border-radius: 8px;
+  padding: 16px;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid #2f3336;
 `;
+
 const SelectInput = styled.select`
   width: 100%;
-  height: 45px;
-  background-color: #323940;
-  color: white;
-  border: none;
+  padding: 12px;
+  background-color: #282f27;
+  color: #ffffff;
+  border: 1px solid #3f4447;
+  border-radius: 6px;
   font-family: "Poppins", sans-serif;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 1rem;
-  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:focus {
+    outline: none;
+    border-color: #ff4757;
+  }
+
+  option {
+    background-color: #1e2124;
+    color: #ffffff;
+    padding: 8px;
+  }
 `;
+
 const Button = styled.button`
-  width: fit-content;
-  margin-left: auto;
   display: flex;
   align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
   background-color: #ff4757;
   color: white;
   font-family: "Poppins", sans-serif;
-  font-weight: semi-bold;
-  font-size: 0.8rem;
+  font-size: 14px;
   border: none;
-  border-radius: 5px;
-  padding: 8px;
+  border-radius: 6px;
   cursor: pointer;
+  transition: all 0.2s;
+  margin-left: auto;
+
+  &:hover {
+    background-color: #ff6b81;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  color: #b9bbbe;
+  cursor: pointer;
+  padding: 4px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: #ffffff;
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const Title = styled.h3`
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  margin: 0;
 `;
 const AddStatus: React.FC<AddStatusProps> = ({ onClose }) => {
   const authContext = React.useContext(AuthContext);
@@ -90,10 +141,12 @@ const AddStatus: React.FC<AddStatusProps> = ({ onClose }) => {
   };
   return (
     <Container>
-      <Close
-        sx={{ color: "white", cursor: "pointer", marginLeft: "auto" }}
-        onClick={onClose}
-      />
+      <Header>
+        <Title>Change Status</Title>
+        <CloseButton onClick={onClose}>
+          <Close />
+        </CloseButton>
+      </Header>
       <SelectInput
         name="status"
         id="status"
@@ -105,7 +158,7 @@ const AddStatus: React.FC<AddStatusProps> = ({ onClose }) => {
         <option value="in-progress">In progress</option>
         <option value="done">Done</option>
       </SelectInput>
-      <Button onClick={() => handleAddStatus()}>Add Status</Button>
+      <Button onClick={() => handleAddStatus()}>Save Status</Button>
     </Container>
   );
 };

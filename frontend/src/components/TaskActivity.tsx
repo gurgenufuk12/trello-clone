@@ -10,6 +10,7 @@ const Container = styled.div`
   flex-direction: column;
   background-color: transparent;
   width: 100%;
+  padding: 0px 35px;
   gap: 5px;
 `;
 const TaskActivityContainer = styled.div`
