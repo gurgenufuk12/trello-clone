@@ -188,6 +188,8 @@ const EditTask: React.FC<EditTaskProps> = ({
   useEffect(() => {
     fetchBoardUsers();
   }, []);
+  console.log("EditTask.tsx: boardUsers", boardUsers);
+  console.log(task.assignedTo);
 
   return (
     <Component onClick={handleContainerClick}>
@@ -202,9 +204,9 @@ const EditTask: React.FC<EditTaskProps> = ({
             <Section>
               <HeaderText>Assigned Members</HeaderText>
               <UsersContainer>
-                {boardUsers.map((user, idx) => (
-                  <Avatar key={idx} user={user} />
-                ))}
+                {task.assignedTo && (
+                  <Avatar key={task.assignedTo.id} user={task.assignedTo} />
+                )}
               </UsersContainer>
             </Section>
           )}
@@ -268,7 +270,7 @@ const EditTask: React.FC<EditTaskProps> = ({
                 <HeaderText>
                   <AssignmentIndIcon /> Assinged to
                 </HeaderText>
-                <Text>{task.assignedTo}</Text>
+                <Text>{task.assignedTo.email}</Text>
               </SectionHeader>
             </Section>
           )}

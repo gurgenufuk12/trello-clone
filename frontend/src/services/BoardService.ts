@@ -4,6 +4,7 @@ import { List } from "../types/List";
 import { Task } from "../types/Task";
 import { TaskLogs } from "../types/Task";
 import { CheckList, CheckListItem } from "../types/Task";
+import { User } from "../types/User";
 
 const API_URL = "http://localhost:8001/api/boards";
 
@@ -228,12 +229,12 @@ export const assignPersonToTask = async (
   boardId: string,
   listId: string,
   taskId: string,
-  userId: string
+  user: User
 ) => {
   try {
     const response = await axios.put(
       `${API_URL}/assignPersonToTask/${boardId}/${listId}/${taskId}`,
-      { userId }
+      { user }
     );
     return response.data;
   } catch (error) {

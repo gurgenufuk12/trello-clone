@@ -516,7 +516,7 @@ const assignPersonToTask = async (req, res, next) => {
     const boardId = req.params.id;
     const listId = req.params.listId;
     const taskId = req.params.taskId;
-    const { userId } = req.body;
+    const { user } = req.body;
 
     const boardRef = db.doc(boardId);
     const board = await boardRef.get();
@@ -535,7 +535,7 @@ const assignPersonToTask = async (req, res, next) => {
         if (!task) {
           res.status(404).send("Task not found");
         } else {
-          task.assignedTo = userId;
+          task.assignedTo = user;
           await boardRef.update({ boardList });
           res.status(200).send("Task assigned successfully");
         }

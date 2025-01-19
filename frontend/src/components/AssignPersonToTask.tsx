@@ -62,9 +62,11 @@ const AssignPersonToTask: React.FC<AssignPersonToTaskProps> = ({
 }) => {
   const authContext = React.useContext(AuthContext);
   const currentUser = authContext?.userProfile;
-  const [selectedUser, setSelectedUser] = React.useState("");
+  const [selectedUserId, setSelectedUserId] = React.useState<string>("");
   const handleAssignUserToTask = async () => {
+    const selectedUser = boardUsers.find((user) => user.id === selectedUserId);
     try {
+      if (!selectedUser) return;
       await assignPersonToTask(boardId, listId, taskId, selectedUser);
       const taskLog = {
         id: "",
@@ -89,8 +91,8 @@ const AssignPersonToTask: React.FC<AssignPersonToTaskProps> = ({
       <SelectInput
         name="users"
         id="users"
-        value={selectedUser}
-        onChange={(e) => setSelectedUser(e.target.value)}
+        value={selectedUserId}
+        onChange={(e) => setSelectedUserId(e.target.value)}
       >
         <option value="">Select a user</option>
         {boardUsers.map((user) => (
